@@ -1,0 +1,171 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #ffffff;
+
+  /* custom font variable from layout */
+  --font-audrey: var(--font-audrey);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  /* Keep your existing Tailwind fonts */
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --font-dm: var(--font-dm-sans);
+  --font-playfair: var(--font-playfair);
+  --font-montserrat: var(--font-montserrat);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #ffffff;
+    --foreground: #ededed;
+  }
+}
+
+
+
+/* GLOBAL BODY STYLING */
+body {
+  background: var(--background);
+  color: var(--foreground);
+
+  /* APPLY YOUR CUSTOM FONT */
+  font-family: var(--font-audrey), Arial, Helvetica;
+
+  /* Smooth text */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 1.2s ease-out forwards;
+}
+
+/* preloader  */
+@keyframes fadeUp {
+  0% {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes borderDraw {
+  0% {
+    stroke-dashoffset: 1000;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+.animate-fade-up {
+  animation: fadeUp 0.9s ease-out forwards;
+}
+
+.animate-fade-up-delay {
+  animation: fadeUp 0.9s ease-out forwards;
+  animation-delay: 0.25s;
+}
+
+.animate-fade-up-delay-2 {
+  animation: fadeUp 0.9s ease-out forwards;
+  animation-delay: 0.45s;
+}
+
+.cursor-splash {
+  position: fixed;
+  width: 16px;
+  height: 16px;
+  background: rgba(0, 0, 0, 0.7);
+  border-radius: 50%;
+  pointer-events: none;
+  transform: translate(-50%, -50%) scale(0);
+  animation: splash 500ms ease-out;
+  z-index: 9999;
+}
+
+
+@keyframes splash {
+  to {
+    transform: translate(-50%, -50%) scale(7);
+    opacity: 0;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.animate-slideIn {
+  animation: slideIn 0.3s ease-out forwards;
+}
+
+/* ========== INVOICE PRINT ONLY ========== */
+@media print {
+  body {
+    background: white;
+  }
+
+  /* Hide everything EXCEPT invoice page */
+  body > *:not(.invoice-page) {
+    display: none !important;
+  }
+
+  .invoice-page {
+    display: block !important;
+  }
+
+  #invoice-print {
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+  }
+}
+.theme-bg{
+ /* background-color:  #8d1a1c; */
+ background-color:  #7a0002;
+ background-image: url("/images/brand/egg-shell.png");
+  background-repeat: repeat;
+  /* opacity: 0.95; */
+}
+.theme-text{
+  color: #efaf00;
+}
+.pattern-theme {
+  background-image: url("/images/brand/pattern2.png");
+  background-repeat: repeat;
+  background-size: 85px;
+  height: 86px;
+}
+.pattern-preloader {
+  background-image: url("/images/brand/pattern.png");
+  background-repeat: repeat;
+  background-size: 85px;
+  height: 86px;
+}
