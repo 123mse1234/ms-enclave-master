@@ -16,7 +16,7 @@ export default function Footer() {
   return (
     <footer>
       {/* ================= MAIN FOOTER ================= */}
-      <div className="theme-bg text-amber-500 rounded-t-3xl">
+      <div className="theme-bg text-yellow-100 rounded-t-3xl">
         <div className="max-w-6xl mx-auto px-6 py-16 grid gap-10 lg:flex lg:justify-between">
 
           {/* BRAND */}
