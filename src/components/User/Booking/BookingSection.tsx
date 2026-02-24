@@ -152,7 +152,6 @@ export default function BookingSection() {
       toast.error("Razorpay SDK failed to load");
       return;
     }
-
     const res = await axios.post("/api/payments/razorpay", {
       amount: booking.totalPrice,
       currency: "INR",
@@ -163,7 +162,6 @@ export default function BookingSection() {
         contact: session?.user?.phone,
       },
     });
-
     const order = res.data;
 
     const options = {
@@ -196,15 +194,27 @@ export default function BookingSection() {
         
         router.push(`/my-bookings/`);
       },
+      modal: {
+        ondismiss: async function () {
+          toast.error("Your payment could not be completed. Please try again using the 'Pay Now' option.");
+          router.push("/my-bookings");
+        },
+      },
       theme: { color: "#3399cc" },
     };
-
     const rzp = new (window as any).Razorpay(options);
-    rzp.open();
+
+    rzp.on("payment.failed", async function (response: any) {
+
+  toast.error("Your payment could not be completed. Please try again using the 'Pay Now' option.");
+  router.push("/my-bookings");
+});
+
+rzp.open();
   } catch (err) {
     console.error(err);
-    toast.error("Payment failed. Please try again.");
-    router.push(`/my-bookings/`);
+    toast.error("Your payment could not be completed. Please try again using the 'Pay Now' option.");
+    router.push(`/my-bookings`);
   }
 };
 
@@ -386,11 +396,9 @@ export default function BookingSection() {
         await handleRazorpayPayment(booking);
         // await handleStripePayment(booking);
       }
-      
-
     } catch (err) {
       console.error(err);
-      // setMessage("❌ Booking failed.");
+      console.log("❌ Booking failed.");
     }
     setIsSubmitting(false);
 

@@ -34,10 +34,12 @@ export async function POST(req: NextRequest) {
     }
 
     await booking.save();
-
+    console.log('confirm api success');
     return NextResponse.json({ message: "Payment confirmed successfully", booking });
+
   } catch (err) {
     console.error(err);
+    console.log('confirm api fail');
     return NextResponse.json({ error: "Failed to confirm payment" }, { status: 500 });
   }
 }

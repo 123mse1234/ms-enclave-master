@@ -71,88 +71,96 @@ export default function MyBookingsPage() {
 };
 
   // Handle payment for a booking
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handlePayment = async (booking: any) => {
-    if (!session?.user) return;
-    setLoadingPayment(booking._id);
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const handlePayment = async (booking: any) => {
+  if (!session?.user) return;
+  setLoadingPayment(booking._id);
 
-    try {
-      const nationality = session.user.nationality;
-      if (nationality) {
-        const scriptLoaded = await loadRazorpayScript();
+  try {
+    const nationality = session.user.nationality;
 
-    if (!scriptLoaded) {
-      toast.error("Razorpay SDK failed to load");
-      return;
-    }
-        // Razorpay flow
-        const res = await axios.post("/api/payments/razorpay", {
-          amount: booking.totalPrice,
-          currency: "INR",
-          bookingId: booking._id,
-          user: {
-            name: session.user.name,
-            email: session.user.email,
-            contact: session.user.phone || "",
-          },
-        });
+    if (nationality) {
+      const scriptLoaded = await loadRazorpayScript();
 
-        const order = res.data;
-
-        const options = {
-          key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
-          amount: order.amount,
-          currency: order.currency,
-          name: "MS Enclave Resort Palakkad",
-          description: `Booking #${booking._id}`,
-          order_id: order.id,
-          prefill: {
-            name: session.user.name,
-            email: session.user.email,
-            contact: session.user.phone || "",
-          },
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          handler: async function (response: any) {
-            // Confirm payment backend
-            await axios.post("/api/bookings/confirm-payment", {
-              bookingId: booking._id,
-              paymentMethod: "razorpay",
-              razorpayPaymentId: response.razorpay_payment_id,
-              razorpayOrderId: response.razorpay_order_id,
-              razorpaySignature: response.razorpay_signature,
-            });
-            setShowConfetti(true)
-            toast.success("Payment successful!");
-            setTimeout(() => {
-              setShowConfetti(false)
-            }, 4000);
-            router.refresh(); // refresh to update status
-          },
-          theme: { color: "#3399cc" },
-        };
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const rzp = new (window as any).Razorpay(options);
-        rzp.open();
-        router.push("/my-bookings");
-      } else {
-        // Stripe flow
-        const res = await axios.post("/api/payments/stripe", {
-          amount: booking.totalPrice,
-          currency: "USD",
-          bookingId: booking._id,
-        });
-
-        if (res.data.url) window.location.href = res.data.url;
+      if (!scriptLoaded) {
+        toast.error("Razorpay SDK failed to load");
+        return;
       }
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (err) {
-      console.log(err);
-      
-      toast.error("Payment could not be initiated. Please try again.");
-    } finally {
-      setLoadingPayment(null);
+
+      // Razorpay flow
+      const res = await axios.post("/api/payments/razorpay", {
+        amount: booking.totalPrice,
+        currency: "INR",
+        bookingId: booking._id,
+        user: {
+          name: session.user.name,
+          email: session.user.email,
+          contact: session.user.phone || "",
+        },
+      });
+
+      const order = res.data;
+
+      const options = {
+        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+        amount: order.amount,
+        currency: order.currency,
+        name: "MS Enclave Resort Palakkad",
+        description: `Booking #${booking._id}`,
+        order_id: order.id,
+        prefill: {
+          name: session.user.name,
+          email: session.user.email,
+          contact: session.user.phone || "",
+        },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        handler: async function (response: any) {
+          await axios.post("/api/bookings/confirm-payment", {
+            bookingId: booking._id,
+            paymentMethod: "razorpay",
+            razorpayPaymentId: response.razorpay_payment_id,
+            razorpayOrderId: response.razorpay_order_id,
+            razorpaySignature: response.razorpay_signature,
+          });
+
+          // ✅ UPDATE LOCAL STATE IMMEDIATELY
+          setBookings((prev) =>
+            prev.map((b) =>
+              b._id === booking._id ? { ...b, status: "paid" } : b
+            )
+          );
+
+          setShowConfetti(true);
+          toast.success("Payment successful!");
+
+          setTimeout(() => {
+            setShowConfetti(false);
+          }, 4000);
+        },
+        theme: { color: "#3399cc" },
+      };
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const rzp = new (window as any).Razorpay(options);
+      rzp.open();
+
+    } else {
+      // Stripe flow
+      const res = await axios.post("/api/payments/stripe", {
+        amount: booking.totalPrice,
+        currency: "USD",
+        bookingId: booking._id,
+      });
+
+      if (res.data.url) window.location.href = res.data.url;
     }
-  };
+  } catch (err) {
+    console.log(err);
+    toast.error("Payment could not be initiated. Please Contact us");
+  } finally {
+    setLoadingPayment(null);
+  }
+};
 
   if (loading)
     return <p className="text-center mt-20 text-gray-500">Loading…</p>;
