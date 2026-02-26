@@ -354,14 +354,13 @@ setTotalPrice(totalWithGST);
       setNights(1);
 
       if (roomsNeeded > 0) {
-        const price =
-          session.user.nationality === "India"
-            ? pkg.indianPrice
-            : pkg.foreignPrice;
+        const price = pkg.indianPrice
 
         const baseAmount = roomsNeeded * price;
 
-        setTotalPrice(applyGST(baseAmount)); // GST for everyone
+const { totalWithGST } = applyGST(baseAmount, price);
+
+setTotalPrice(totalWithGST); // GST for everyone
       }
     }
   };
