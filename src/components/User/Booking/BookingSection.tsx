@@ -27,6 +27,7 @@ export default function BookingSection() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
 
+  // booking section 
 
 
   const today = new Date().toISOString().split("T")[0];
