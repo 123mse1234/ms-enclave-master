@@ -114,10 +114,16 @@ export default function BookingSection() {
 
 
   // -------- GST FUNCTION ----------
-  const applyGST = (amount: number) => {
-    const gst = amount * 0.18; // 18% GST
-    return amount + gst;
+  const applyGST = (baseAmount: number, pricePerNight: number) => {
+  const gstRate = pricePerNight < 7500 ? 0.05 : 0.18;
+  const gst = baseAmount * gstRate;
+
+  return {
+    gstAmount: gst,
+    totalWithGST: baseAmount + gst,
+    gstRate,
   };
+};
 
   // RazorPayLoader 
   const loadRazorpayScript = () => {
@@ -304,8 +310,9 @@ rzp.open();
     // 🔥 Calculate base price using nights
     const baseAmount = rooms * price * nights;
 
-    // 🔥 Apply GST (option B: for ALL users)
-    setTotalPrice(applyGST(baseAmount));
+const { totalWithGST } = applyGST(baseAmount, price);
+
+setTotalPrice(totalWithGST);
   };
 
   // ---------- NIGHTS CHANGE (WITH GST) ----------
@@ -330,8 +337,9 @@ rzp.open();
       // 🔥 Calculate base amount with nights
       const baseAmount = roomsNeeded * price * value;
 
-      // 🔥 Apply GST (Option B — for all users)
-      setTotalPrice(applyGST(baseAmount));
+const { totalWithGST } = applyGST(baseAmount, price);
+
+setTotalPrice(totalWithGST);
     }
   };
 
@@ -369,6 +377,8 @@ rzp.open();
     checkOutDate.setDate(checkOutDate.getDate() + nights);
 
     if (!session?.user?.id) return router.push("/login");
+
+    
 
     if (!totalPrice) {
       toast.error("Please Fill All Fields");
@@ -661,7 +671,7 @@ rzp.open();
                     const price = isIndian ? pkg.indianPrice : pkg.foreignPrice;
                     const currency = isIndian ? "₹" : "$";
                     const baseAmount = roomsNeeded * price * nights;
-                    const gstAmount = baseAmount * 0.18;
+const { gstAmount, gstRate } = applyGST(baseAmount, price);
 
                     return (
                       <>
@@ -673,9 +683,9 @@ rzp.open();
 
                         {/* GST */}
                         <p>
-                          <strong>GST (18%):</strong> {currency}
-                          {gstAmount.toFixed(2)}
-                        </p>
+  <strong>GST ({gstRate * 100}%):</strong> {currency}
+  {gstAmount.toFixed(2)}
+</p>
 
                         {/* Total Price */}
                         <p>

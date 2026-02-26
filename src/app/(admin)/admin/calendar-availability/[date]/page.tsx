@@ -202,20 +202,30 @@ export default function DayAvailabilityPage() {
           </button>
         </div>
 
-        {selectedPackage && !noRooms && (
-          <div className="mt-4 p-4 bg-white border rounded">
-            <p>
-              Base: ₹{selectedPackage.indianPrice * roomsToBook}
-            </p>
-            <p>
-              GST (18%): ₹
-              {(selectedPackage.indianPrice * roomsToBook * 0.18).toFixed(2)}
-            </p>
-            <p className="font-bold">
-              Total: ₹{totalPrice}
-            </p>
-          </div>
-        )}
+        {selectedPackage && !noRooms && (() => {
+  const pricePerNight = selectedPackage.indianPrice;
+  const baseAmount = pricePerNight * roomsToBook;
+
+  const gstRate = pricePerNight < 7500 ? 0.05 : 0.18;
+  const gstAmount = baseAmount * gstRate;
+  const total = baseAmount + gstAmount;
+
+  return (
+    <div className="mt-4 p-4 bg-white border rounded">
+      <p>
+        Base: ₹{baseAmount}
+      </p>
+
+      <p>
+        GST ({gstRate * 100}%): ₹{gstAmount.toFixed(2)}
+      </p>
+
+      <p className="font-bold">
+        Total: ₹{total.toFixed(2)}
+      </p>
+    </div>
+  );
+})()}
       </div>
 
       {/* BOOKINGS LIST */}

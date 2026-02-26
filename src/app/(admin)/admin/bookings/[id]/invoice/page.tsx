@@ -87,17 +87,47 @@ export default function AdminBookingInvoicePage() {
           Booking Details
         </h2>
 
-        <div className="space-y-2 text-sm">
-          <p><span className="font-medium">Package:</span> {booking.package?.packageName}</p>
-          <p><span className="font-medium">Price:</span> ₹{booking.package?.indianPrice} / Night + GST (18%)</p>
-          <p>
-            <span className="font-medium">Stay:</span>{" "}
-            {new Date(booking.checkInDate).toLocaleDateString()} →{" "}
-            {new Date(booking.checkOutDate).toLocaleDateString()}
-          </p>
-          <p><span className="font-medium">Rooms:</span> {booking.roomsNeeded}</p>
-          <p><span className="font-medium">Guests:</span> {totalGuests}</p>
-        </div>
+        {(() => {
+  const pricePerNight = booking.package?.indianPrice || 0;
+
+  // GST Slab Rule
+  const gstRate = pricePerNight < 7500 ? 0.05 : 0.18;
+
+  const formatDate = (date: string) =>
+    new Date(date).toLocaleDateString("en-IN", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      timeZone: "Asia/Kolkata",
+    });
+
+  return (
+    <div className="space-y-2 text-sm">
+      <p>
+        <span className="font-medium">Package:</span>{" "}
+        {booking.package?.packageName}
+      </p>
+
+      <p>
+        <span className="font-medium">Price:</span> ₹{pricePerNight} / Night + GST ({gstRate * 100}%)
+      </p>
+
+      <p>
+        <span className="font-medium">Stay:</span>{" "}
+        {formatDate(booking.checkInDate)} →{" "}
+        {formatDate(booking.checkOutDate)}
+      </p>
+
+      <p>
+        <span className="font-medium">Rooms:</span> {booking.roomsNeeded}
+      </p>
+
+      <p>
+        <span className="font-medium">Guests:</span> {totalGuests}
+      </p>
+    </div>
+  );
+})()}
       </section>
 
     </div>
