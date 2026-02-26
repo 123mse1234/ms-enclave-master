@@ -52,6 +52,16 @@ export default function AdminBookingPreview() {
     });
   }, [bookings, search, status, fromDate, toDate]);
 
+    // Date formatter (India format + timezone safe)
+    const formatDate = (date: string) => {
+      return new Date(date).toLocaleDateString("en-IN", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+        timeZone: "Asia/Kolkata", // prevents UTC shift on Vercel
+      });
+    };
+
   if (loading) return <Loader />;
 
   return (
@@ -88,9 +98,8 @@ export default function AdminBookingPreview() {
       </td>
 
       <td className="p-3">
-        {new Date(b.checkInDate).toLocaleDateString()} →{" "}
-        {new Date(b.checkOutDate).toLocaleDateString()}
-      </td>
+  {formatDate(b.checkInDate)} → {formatDate(b.checkOutDate)}
+</td>
 
       <td className="p-3 font-semibold">
         ₹{b.totalPrice}
