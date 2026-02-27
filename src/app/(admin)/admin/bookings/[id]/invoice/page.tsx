@@ -37,7 +37,7 @@ export default function AdminBookingInvoicePage() {
   const totalGuests = booking.adults + booking.children;
 
   return (
-    <div className="invoice-page min-h-screen py-16 bg-gradient-to-br from-[#7a0002] via-[#5a0001] to-black font-dm">
+    <div className="invoice-page min-h-screen py-16  from-[#7a0002] via-[#5a0001] to-black font-dm">
   <div
     id="invoice-print"
     className="max-w-4xl mx-auto bg-white text-black rounded-2xl shadow-2xl p-10"

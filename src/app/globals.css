@@ -126,12 +126,11 @@ body {
 }
 
 /* ========== INVOICE PRINT ONLY ========== */
-@media print {
+/* @media print {
   body {
     background: white;
   }
 
-  /* Hide everything EXCEPT invoice page */
   body > *:not(.invoice-page) {
     display: none !important;
   }
@@ -145,6 +144,27 @@ body {
     padding: 0;
     margin: 0;
     box-shadow: none;
+  }
+} */
+ @media print {
+  body * {
+    visibility: hidden;
+  }
+
+  #invoice-print,
+  #invoice-print * {
+    visibility: visible;
+  }
+
+  #invoice-print {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+  }
+
+  .print\:hidden {
+    display: none !important;
   }
 }
 .theme-bg{
