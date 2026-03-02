@@ -27,8 +27,6 @@ export default function Home() {
    <PatternSection />
    <HomeVideoSection />
    <PatternSection />
-   <ActivitiesSwiper />
-   <PatternSection />
    <HomeGallery />
    <PatternSection />
    <ContactFormSection />

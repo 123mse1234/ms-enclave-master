@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Loader from "@/components/common/Loader";
 import Breadcrumb from "@/components/common/Breadcrumb";
 import AdminBreadcrumb from "@/components/common/AdminHeader/AdminBreadcrumb";
+import PatternSection from "@/components/common/PatternSection";
 
 export default function ViewPackages() {
   const [packages, setPackages] = useState<any[]>([]);
@@ -84,12 +85,13 @@ export default function ViewPackages() {
 
   return (
     <section>
-      <AdminBreadcrumb
-        heading="All Packages"
-        bgImage="/images/common/ms-enclave-31.webp" // ⭐ background image
-        items={[{ label: "All Packages", href: "/amenities/party-hall" }]}
-      />
+      {/* <PatternSection /> */}
       <div className="p-6 max-w-7xl mx-auto">
+        <div>
+          <h1 className="text-5xl font-semibold text-yellow-100  leading-tight text-shadow-sm text-center ">Package Management</h1>
+          <p className="text-center text-white font-medium text-3xl text-shadow-lg leading-relaxed font-dm mt-2">Create, Edit & Manage Resort Packages</p>
+          <p className="text-center text-white font-medium text-lg text-shadow-lg leading-relaxed font-dm mb-12 mt-3">Easily manage all resort packages from one centralized dashboard. View complete package details including pricing, guest limits, and inclusions. You can add new packages, edit existing ones, or delete outdated packages to keep your offerings updated and organized.</p>
+        </div>
         {/* 🔍 FILTER BAR */}
         <div className="bg-white text-black rounded-xl shadow p-4 mb-6 grid grid-cols-1 md:grid-cols-7 gap-4 font-dm">
           <input

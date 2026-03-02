@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import Link from "next/link";
+import Loader from "@/components/common/Loader";
 
 const STATUS_TABS = ["all", "paid", "pending", "cancelled"];
 
@@ -66,7 +67,9 @@ export default function AdminBookingsPage() {
     }
   };
 
-  if (loading) return <p className="p-10">Loading…</p>;
+  if (loading) {
+    return <Loader />;
+  }
 
   return (
     <div className="max-w-7xl mx-auto p-6 text-white">
