@@ -6,6 +6,7 @@ import Loader from "@/components/common/Loader";
 import Breadcrumb from "@/components/common/Breadcrumb";
 import AdminBreadcrumb from "@/components/common/AdminHeader/AdminBreadcrumb";
 import PatternSection from "@/components/common/PatternSection";
+import Link from "next/link";
 
 export default function ViewPackages() {
   const [packages, setPackages] = useState<any[]>([]);
@@ -93,50 +94,69 @@ export default function ViewPackages() {
           <p className="text-center text-white font-medium text-lg text-shadow-lg leading-relaxed font-dm mb-12 mt-3">Easily manage all resort packages from one centralized dashboard. View complete package details including pricing, guest limits, and inclusions. You can add new packages, edit existing ones, or delete outdated packages to keep your offerings updated and organized.</p>
         </div>
         {/* 🔍 FILTER BAR */}
-        <div className="bg-white text-black rounded-xl shadow p-4 mb-6 grid grid-cols-1 md:grid-cols-7 gap-4 font-dm">
-          <input
+        <div className="bg-[#7a0002] rounded-2xl shadow-2xl  p-4 mb-6 grid grid-cols-1 md:grid-cols-5 gap-4 font-dm">
+          <div className="flex flex-col">
+            <label className="text-md text-yellow-100 mb-1 tracking-wide">Search</label>
+            <input
             placeholder="Search package..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="border px-3 py-2 rounded text-black"
+            className="w-full bg-white text-gray-800 px-4 py-2.5 rounded-lg   focus:outline-none focus:ring-2 focus:ring-yellow-400   shadow-sm"
           />
+          </div>
 
-          <input
-            placeholder="Max Price ₹"
-            type="number"
-            value={maxPrice}
-            onChange={(e) => setMaxPrice(e.target.value)}
-            className="border px-3 py-2 rounded"
-          />
-
-          <input
+          <div className="flex flex-col">
+            <label className="text-md text-yellow-100 mb-1 tracking-wide">Min Adults</label>
+                <input
             placeholder="Min Adults"
             type="number"
             value={minAdults}
             onChange={(e) => setMinAdults(e.target.value)}
-            className="border px-3 py-2 rounded"
+            className="w-full bg-white text-gray-800 px-4 py-2.5 rounded-lg   focus:outline-none focus:ring-2 focus:ring-yellow-400   shadow-sm"
           />
+          </div>
 
-          <input
+          <div className="flex flex-col">
+            <label className="text-md text-yellow-100 mb-1 tracking-wide">Min Children</label>
+                <input
             placeholder="Min Children"
             type="number"
             value={minChildren}
             onChange={(e) => setMinChildren(e.target.value)}
-            className="border px-3 py-2 rounded"
+            className="w-full bg-white text-gray-800 px-4 py-2.5 rounded-lg   focus:outline-none focus:ring-2 focus:ring-yellow-400   shadow-sm"
           />
+          </div>
 
-          <select
+          <div className="flex flex-col">
+            <label className="text-md text-yellow-100 mb-1 tracking-wide">Sort by</label>
+                <select
             value={sortPrice}
             onChange={(e) => setSortPrice(e.target.value as any)}
-            className="border px-3 py-2 rounded"
+            className="w-full bg-white text-gray-800 px-4 py-2.5 rounded-lg   focus:outline-none focus:ring-2 focus:ring-yellow-400   shadow-sm"
           >
-            <option value="">Sort by Price</option>
+            <option value="">Newest</option>
             <option value="low">Low → High</option>
             <option value="high">High → Low</option>
           </select>
+          </div>
+
+          <div className="flex flex-col">
+               <button
+            onClick={resetFilters}
+            className="bg-yellow-100 text-black rounded px-3 py-2 hover:bg-green-600 hover:text-white"
+          >
+            Reset
+          </button>
+               <Link
+               href={'/admin/packages/add'}
+            className="bg-red-600 text-white text-center rounded px-3 py-2 hover:bg-green-600 mt-2"
+          >
+            Add New Package
+          </Link>
+          </div>
 
           {/* View Toggle */}
-          <div className="flex gap-2">
+          {/* <div className="flex gap-2">
             <button
               onClick={() => setView("grid")}
               className={`px-3 py-2 rounded border ${
@@ -153,15 +173,10 @@ export default function ViewPackages() {
             >
               List
             </button>
-          </div>
+          </div> */}
 
           {/* Reset */}
-          <button
-            onClick={resetFilters}
-            className="bg-red-500 text-white rounded px-3 py-2 hover:bg-red-600"
-          >
-            Reset
-          </button>
+          
         </div>
 
         {/* 📦 PACKAGES */}
@@ -175,7 +190,7 @@ export default function ViewPackages() {
           {filteredPackages.map((pkg) => (
             <div
               key={pkg._id}
-              className={`bg-white rounded-xl shadow hover:shadow-xl transition overflow-hidden ${
+              className={`bg-[#840205]   rounded-xl shadow hover:shadow-xl transition overflow-hidden ${
                 view === "list" ? "flex gap-4" : ""
               }`}
             >
@@ -187,14 +202,14 @@ export default function ViewPackages() {
               />
 
               <div className="p-4 flex-1">
-                <h2 className="text-xl font-bold text-black">
+                <h2 className="text-xl font-bold text-yellow-100 capitalize">
                   {pkg.packageName}
                 </h2>
-                <p className="text-gray-600 text-sm mt-1 line-clamp-2">{pkg.description}</p>
+                <p className="text-gray-50 text-sm mt-1 line-clamp-2 capitalize">{pkg.description}</p>
 
-                <div className="mt-3 text-sm text-black">
+                <div className="mt-3 text-sm text-white">
                   <p>
-                    ₹ {pkg.indianPrice} — $ {pkg.foreignPrice}
+                    Price: ₹ {pkg.indianPrice} — $ {pkg.foreignPrice}
                   </p>
                   <p>Adults: {pkg.maxAdults}</p>
                   <p>Children: {pkg.maxChildren}</p>
@@ -202,13 +217,13 @@ export default function ViewPackages() {
 
                 <div className="flex gap-2 mt-4">
                   <button
-                    className="bg-blue-600 text-white px-3 py-1 rounded"
+                    className="bg-yellow-100 text-black px-5 py-1 rounded hover:bg-green-600 hover:text-white"
                     onClick={() => router.push(`/admin/packages/${pkg.slug}`)}
                   >
                     View
                   </button>
                   <button
-                    className="bg-green-600 text-white px-3 py-1 rounded"
+                    className="bg-yellow-100 text-black px-5 py-1 rounded hover:bg-green-600 hover:text-white"
                     onClick={() =>
                       router.push(`/admin/packages/edit/${pkg._id}`)
                     }
@@ -216,7 +231,7 @@ export default function ViewPackages() {
                     Edit
                   </button>
                   <button
-                    className="bg-red-600 text-white px-3 py-1 rounded"
+                    className="bg-red-600  text-white px-5 py-1 rounded hover:bg-green-600 hover:text-white"
                     onClick={() => deletePackage(pkg._id)}
                   >
                     Delete
