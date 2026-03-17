@@ -190,7 +190,7 @@ export default function ViewPackages() {
           {filteredPackages.map((pkg) => (
             <div
               key={pkg._id}
-              className={`bg-[#840205]   rounded-xl shadow hover:shadow-xl transition overflow-hidden ${
+              className={`bg-[#840205] border border-yellow-100/10  rounded-xl shadow hover:shadow-xl transition overflow-hidden ${
                 view === "list" ? "flex gap-4" : ""
               }`}
             >

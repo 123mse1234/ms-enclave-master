@@ -80,17 +80,17 @@ export default function AdminCalender() {
   };
 
   return (
-    <div className="mx-auto p-6 shadow font-dm rounded-xl bg-gray-50">
+    <div className="max-w-6xl mx-auto p-6 theme-bg shadow-2xl border border-yellow-100/10 rounded-2xl">
       {/* Month Controls */}
       <div className="flex items-center justify-center gap-4 mb-6 font-dm">
         <button
           onClick={prevMonth}
-          className="p-2 rounded bg-white text-black hover:bg-gray-300 hover:text-white"
+          className="p-2 rounded text-white hover:animate-bounce hover:text-yellow-100 "
         >
           ◀
         </button>
 
-        <h1 className="text-xl font-black text-black text-center">
+        <h1 className="text-2xl font-bold text-yellow-100 text-center">
           {new Date(year, month).toLocaleString("default", {
             month: "long",
             year: "numeric",
@@ -99,7 +99,7 @@ export default function AdminCalender() {
 
         <button
           onClick={nextMonth}
-          className="p-2 rounded bg-white text-black hover:bg-gray-300 hover:text-white"
+          className="p-2 rounded text-white hover:animate-bounce hover:text-yellow-100 "
         >
           ▶
         </button>
@@ -111,12 +111,12 @@ export default function AdminCalender() {
       ) : (
         <div
           ref={calendarRef}
-          className="grid grid-cols-7 gap-2 text-center select-none"
+          className="grid grid-cols-7 gap-2 text-center select-none font-dm"
           onMouseDown={handleMouseDown}
           onMouseUp={handleMouseUp}
         >
           {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((d) => (
-            <div key={d} className="font-semibold text-black text-sm bg-white rounded py-1 shadow ">
+            <div key={d} className="font-semibold text-white text-sm  rounded py-1 shadow ">
               {d}
             </div>
           ))}
@@ -139,7 +139,7 @@ export default function AdminCalender() {
               <Link
                 href={`/admin/calendar-availability/${dateKey}`}
                 key={dateKey}
-                className={"block rounded-lg p-3 relative text-black bg-white hover:bg-blue-500 shadow "}
+                className={"block rounded-lg p-3 relative text-white border-yellow-100/10 bg-black/5 hover:bg-red-700 shadow "}
               >
                 <div className="font-bold">{day}</div>
                 <div className={` h-3 w-3 absolute top-2 right-2 rounded-full ${getStatusColor(
@@ -147,7 +147,7 @@ export default function AdminCalender() {
                   day
               )}`} style={{height:'10px', width:"10px"}}></div>
 
-                <p className="text-xs">Available: {info?.available ?? 0}</p>
+                <p className="text-xs text-white">Available: {info?.available ?? 0}</p>
               </Link>
             );
           })}
@@ -155,7 +155,7 @@ export default function AdminCalender() {
       )}
 
       {/* Legend */}
-      <div className="mt-8 flex gap-6 text-sm text-black">
+      <div className="mt-8 flex gap-6 text-sm text-white font-dm">
         <div className="flex items-center gap-2">
           <span className="w-4 h-4 bg-green-500 rounded"></span>
           Available

@@ -73,7 +73,7 @@ export default function AdminBookingInvoicePage() {
           Customer Details
         </h2>
 
-        <div className="space-y-2 text-sm">
+        <div className="space-y-2 text-sm Customer Details">
           <p><span className="font-medium">Name:</span> {booking.user?.name || booking.clientName}</p>
           <p><span className="font-medium">Email:</span> {booking.user?.email || "N/A"}</p>
           <p><span className="font-medium">Phone:</span> {booking.phone}</p>
@@ -102,7 +102,7 @@ export default function AdminBookingInvoicePage() {
     });
 
   return (
-    <div className="space-y-2 text-sm">
+    <div className="space-y-2 text-sm capitalize">
       <p>
         <span className="font-medium">Package:</span>{" "}
         {booking.package?.packageName}

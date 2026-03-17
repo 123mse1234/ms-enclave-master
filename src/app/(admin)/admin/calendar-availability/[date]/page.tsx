@@ -6,6 +6,8 @@ import axios from "axios";
 import ConfettiOverlay from "@/components/common/ConfettiOverlay";
 import toast from "react-hot-toast";
 import AdminBreadcrumb from "@/components/common/AdminHeader/AdminBreadcrumb";
+import Loader from "@/components/common/Loader";
+import Link from "next/link";
 
 /* ================= MAIN PAGE ================= */
 
@@ -38,9 +40,7 @@ export default function DayAvailabilityPage() {
   const loadDayData = async () => {
     setLoading(true);
 
-    const res = await axios.get(
-      `/api/admin/calendar-availability/${date}`
-    );
+    const res = await axios.get(`/api/admin/calendar-availability/${date}`);
 
     setSummary(res.data.summary);
     setBookings(res.data.bookings);
@@ -49,10 +49,9 @@ export default function DayAvailabilityPage() {
     if (res.data.summary.availableRooms > 0) {
       const pkgRes = await axios.get("/api/packages");
 
-      const pkgData =
-        Array.isArray(pkgRes.data)
-          ? pkgRes.data
-          : Array.isArray(pkgRes.data.data)
+      const pkgData = Array.isArray(pkgRes.data)
+        ? pkgRes.data
+        : Array.isArray(pkgRes.data.data)
           ? pkgRes.data.data
           : [];
 
@@ -109,7 +108,9 @@ export default function DayAvailabilityPage() {
     loadDayData();
   };
 
-  if (loading) return <p className="p-6">Loading...</p>;
+  if (loading) {
+    return <Loader />;
+  }
   if (!summary) return <p className="p-6 text-red-600">No data</p>;
 
   /* ================= UI ================= */
@@ -117,153 +118,224 @@ export default function DayAvailabilityPage() {
   return (
     <section>
       {/* 🎉 CONFETTI */}
-   {showConfetti && (
-  <ConfettiOverlay show={showConfetti} />
+      {showConfetti && <ConfettiOverlay show={showConfetti} />}
+      <div className="max-w-7xl mx-auto p-6 text-white mt-5">
+        <h1 className="text-5xl font-dm font-semibold text-yellow-100  leading-tight text-shadow-sm text-center ">
+          Reservation :{" "}
+          <span className=" font-semibold text-yellow-100  leading-tight text-shadow-sm text-center ">
+            {date}
+          </span>
+        </h1>
 
-
-)}
-<AdminBreadcrumb
-        heading={`Availability ${date}`}
-        bgImage="/images/common/ms-enclave-31.webp" // ⭐ background image
-        items={[{ label: "All Packages", href: "/amenities/party-hall" }]}
-      />
-    <div className="max-w-6xl mx-auto p-6">
-      {/* SUMMARY */}
-      <div className="grid grid-cols-3 gap-6 mb-10">
-        <SummaryCard title="Total Rooms" value={summary.totalRooms} />
-        <SummaryCard title="Booked Rooms" value={summary.bookedRooms} />
-        <SummaryCard title="Available Rooms" value={summary.availableRooms} />
+        <p className="text-center text-white font-medium text-lg text-shadow-lg leading-relaxed font-dm mt-3">
+          Track bookings by date, view check-ins and check-outs, and manage room
+          occupancy with ease. Use the calendar to filter and organize
+          reservations, and quickly add new bookings directly as an admin for
+          offline or manual entries.
+        </p>
       </div>
-
-      {/* ADMIN BOOKING */}
-      <div className="border rounded-lg p-6 mb-10 bg-gray-50 text-black">
-        <h2 className="text-xl font-semibold mb-4">
-          🛎 Admin Manual Booking
-        </h2>
-
-        <div className="grid md:grid-cols-5 gap-4 items-end">
-          <input
-            disabled={noRooms}
-            placeholder="Client Name"
-            value={clientName}
-            onChange={(e) => setClientName(e.target.value)}
-            className="border p-2 rounded"
-          />
-
-          <input
-            disabled={noRooms}
-            placeholder="Phone Number"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-            className="border p-2 rounded"
-          />
-
-          <select
-            disabled={noRooms}
-            className="border p-2 rounded"
-            value={selectedPackage?._id || ""}
-            onChange={(e) => {
-              const pkg = packages.find(
-                (p) => p._id === e.target.value
-              );
-              setSelectedPackage(pkg);
-            }}
-          >
-            <option value="">Select Package</option>
-            {packages.map((pkg) => (
-              <option key={pkg._id} value={pkg._id}>
-                {pkg.packageName} – ₹{pkg.indianPrice}/room
-              </option>
-            ))}
-          </select>
-
-          <input
-            type="number"
-            min={1}
-            max={summary.availableRooms}
-            disabled={noRooms}
-            value={roomsToBook}
-            onChange={(e) => setRoomsToBook(Number(e.target.value))}
-            className="border p-2 rounded"
-          />
-
-          <button
-            disabled={
-              noRooms ||
-              !clientName ||
-              !phone ||
-              !selectedPackage ||
-              roomsToBook > summary.availableRooms
-            }
-            onClick={handleAdminBooking}
-            className="bg-blue-600 text-white px-6 py-2 rounded disabled:bg-gray-400"
-          >
-            Book
-          </button>
+      <div className="max-w-6xl mx-auto p-6">
+        {/* SUMMARY */}
+        <div className="grid grid-cols-3 gap-6 mb-10">
+          <SummaryCard title="Total Rooms" value={summary.totalRooms} />
+          <SummaryCard title="Booked Rooms" value={summary.bookedRooms} />
+          <SummaryCard title="Available Rooms" value={summary.availableRooms} />
         </div>
 
-        {selectedPackage && !noRooms && (() => {
-  const pricePerNight = selectedPackage.indianPrice;
-  const baseAmount = pricePerNight * roomsToBook;
+        {/* ADMIN BOOKING */}
+        <div className="bg-[#7a0002] rounded-2xl shadow-2xl p-6 mb-6 border  border-yellow-100/10">
+          <h2 className="text-4xl text-shadow-xl text-yellow-100 font-semibold mb-8 text-center">
+            Admin Manual Booking
+          </h2>
 
-  const gstRate = pricePerNight < 7500 ? 0.05 : 0.18;
-  const gstAmount = baseAmount * gstRate;
-  const total = baseAmount + gstAmount;
+          <div className="space-y-4 font-dm">
+            {/* ROW 1 → Client Name + Phone */}
+            <div className="grid md:grid-cols-2 gap-4">
+              <div className="flex flex-col">
+                <label className="text-md text-yellow-100 mb-1 tracking-wide">
+                  Client Name
+                </label>
+                <input
+                  disabled={noRooms}
+                  placeholder="Name"
+                  value={clientName}
+                  onChange={(e) => setClientName(e.target.value)}
+                  className="w-full bg-white text-gray-800 px-4 py-2.5 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 shadow-sm"
+                />
+              </div>
 
-  return (
-    <div className="mt-4 p-4 bg-white border rounded">
-      <p>
-        Base: ₹{baseAmount}
-      </p>
+              <div className="flex flex-col">
+                <label className="text-md text-yellow-100 mb-1 tracking-wide">
+                  Phone Number
+                </label>
+                <input
+                  disabled={noRooms}
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  className="w-full bg-white text-gray-800 px-4 py-2.5 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 shadow-sm"
+                />
+              </div>
+            </div>
 
-      <p>
-        GST ({gstRate * 100}%): ₹{gstAmount.toFixed(2)}
-      </p>
-
-      <p className="font-bold">
-        Total: ₹{total.toFixed(2)}
-      </p>
-    </div>
-  );
-})()}
-      </div>
-
-      {/* BOOKINGS LIST */}
-      <table className="w-full border text-black">
-        <thead className="bg-gray-100">
-          <tr>
-            <th className="p-3 border">Customer</th>
-            <th className="p-3 border">Rooms</th>
-            <th className="p-3 border">Status</th>
-            <th className="p-3 border">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {bookings.map((b) => (
-            <tr key={b._id}>
-              <td className="p-3 border">{b.userId?.name || "Admin"}</td>
-              <td className="p-3 border">{b.roomsNeeded}</td>
-              <td className="p-3 border">{b.status}</td>
-              <td className="p-3 border text-center">
-                <button
-                  onClick={() => setSelectedBooking(b)}
-                  className="bg-green-600 text-white px-4 py-1 rounded"
+            {/* ROW 2 → Package + Rooms + Button */}
+            <div className="grid md:grid-cols-3 gap-4 items-end">
+              <div className="flex flex-col">
+                <label className="text-md text-yellow-100 mb-1 tracking-wide">
+                  Package
+                </label>
+                <select
+                  disabled={noRooms}
+                  className="w-full bg-white text-gray-800 px-4 py-2.5 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 shadow-sm"
+                  value={selectedPackage?._id || ""}
+                  onChange={(e) => {
+                    const pkg = packages.find((p) => p._id === e.target.value);
+                    setSelectedPackage(pkg);
+                  }}
                 >
-                  View
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+                  <option value="">Select Package</option>
+                  {packages.map((pkg) => (
+                    <option key={pkg._id} value={pkg._id}>
+                      {pkg.packageName} – ₹{pkg.indianPrice}/room
+                    </option>
+                  ))}
+                </select>
+              </div>
 
-      {selectedBooking && (
-        <BookingModal
-          booking={selectedBooking}
-          onClose={() => setSelectedBooking(null)}
-        />
-      )}
-    </div>
+              <div className="flex flex-col">
+                <label className="text-md text-yellow-100 mb-1 tracking-wide">
+                  Number of Rooms
+                </label>
+                <input
+                  type="number"
+                  min={1}
+                  max={summary.availableRooms}
+                  disabled={noRooms}
+                  value={roomsToBook}
+                  onChange={(e) => setRoomsToBook(Number(e.target.value))}
+                  className="w-full bg-white text-gray-800 px-4 py-2.5 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 shadow-sm"
+                />
+              </div>
+
+              <button
+                disabled={
+                  noRooms ||
+                  !clientName ||
+                  !phone ||
+                  !selectedPackage ||
+                  roomsToBook > summary.availableRooms
+                }
+                onClick={handleAdminBooking}
+                className="bg-green-600 text-white px-6 py-2 rounded disabled:bg-gray-400"
+              >
+                Book
+              </button>
+            </div>
+          </div>
+
+          {selectedPackage &&
+            !noRooms &&
+            (() => {
+              const pricePerNight = selectedPackage.indianPrice;
+              const baseAmount = pricePerNight * roomsToBook;
+
+              const gstRate = pricePerNight < 7500 ? 0.05 : 0.18;
+              const gstAmount = baseAmount * gstRate;
+              const total = baseAmount + gstAmount;
+
+              return (
+                <div className="mt-4 p-4 font-dm">
+                  <p>Base: ₹{baseAmount}</p>
+
+                  <p>
+                    GST ({gstRate * 100}%): ₹{gstAmount.toFixed(2)}
+                  </p>
+
+                  <p className="font-bold">Total: ₹{total.toFixed(2)}</p>
+                </div>
+              );
+            })()}
+        </div>
+
+        {/* BOOKINGS LIST */}
+        <div className="overflow-x-auto bg-[#7a0002] rounded-2xl shadow-2xl p-6 mb-6 font-dm">
+          <table className="min-w-full text-md">
+            <thead className="text-yellow-100">
+              <tr>
+                <th className="p-3 text-center">Package</th>
+                <th className="p-3 text-center">Guest</th>
+                <th className="p-3 text-center">Dates</th>
+                <th className="p-3 text-center">Total</th>
+                <th className="p-3 text-center">Status</th>
+                <th className="p-3 text-center">Payment</th>
+                <th className="p-3 text-center">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {bookings.map((b) => (
+                <tr
+                  key={b._id}
+                  className="border-t border-yellow-50/25 hover:bg-black/10 capitalize"
+                >
+                  <td className="p-3 text-center font-medium">
+                    {b.packageId?.packageName}
+                  </td>
+
+                  <td className="p-3 text-center">
+                    <p>{b.userId?.name || b.clientName || "Guest"}</p>
+                    <p className="text-xs text-gray-400">{b.phone}</p>
+                  </td>
+
+                  <td className="p-3 text-center">
+                    {new Date(b.checkInDate).toLocaleDateString()} →{" "}
+                    {new Date(b.checkOutDate).toLocaleDateString()}
+                  </td>
+
+                  <td className="p-3 text-center font-semibold">
+                    ₹{b.totalPrice}
+                  </td>
+
+                  <td className="p-3 text-center">
+                    <span
+                      className={`px-3 py-1 rounded-full text-xs ${
+                        b.status === "paid"
+                          ? "bg-green-100 text-green-700"
+                          : b.status === "pending"
+                            ? "bg-orange-100 text-orange-700"
+                            : "bg-red-100 text-red-700"
+                      }`}
+                    >
+                      {b.status.toUpperCase()}
+                    </span>
+                  </td>
+
+                  <td className="p-3 text-center">
+                    {b.paymentMethod === "admin-manual"
+                      ? "Admin"
+                      : b.paymentMethod ||
+                        (b.razorpayPaymentId ? "Razorpay" : "N/A")}
+                  </td>
+
+                  <td className="p-3 text-center">
+                    <Link
+                      href={`/admin/bookings/${b._id}`}
+                      className="border px-2 py-1 rounded text-xs"
+                    >
+                      View
+                    </Link>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        {selectedBooking && (
+          <BookingModal
+            booking={selectedBooking}
+            onClose={() => setSelectedBooking(null)}
+          />
+        )}
+      </div>
     </section>
   );
 }
@@ -335,9 +407,9 @@ function BookingModal({ booking, onClose }: any) {
 
 function SummaryCard({ title, value }: any) {
   return (
-    <div className="p-6 rounded shadow bg-white text-black text-center">
-      <p>{title}</p>
-      <p className="text-3xl font-bold">{value}</p>
+    <div className="bg-[#7a0002] rounded-2xl shadow-2xl p-6 mb-6 border border-yellow-100/10 text-center font-dm">
+      <p className="text-yellow-100">{title}</p>
+      <p className="text-4xl mt-2 font-bold text-white">{value}</p>
     </div>
   );
 }

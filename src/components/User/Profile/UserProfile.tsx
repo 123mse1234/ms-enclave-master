@@ -282,7 +282,7 @@ focus:border-yellow-100">
 
   {/* TABLE DETAILS */}
   <table className="w-full">
-    <tbody className="divide-y divide-yellow-50/10 px-10">
+    <tbody className="divide-y divide-yellow-50/10 px-10 capitalize">
 
       <tr className="hover:shadow-lg transition">
         <td className="py-4 text-lg text-white font-light w-1/3">

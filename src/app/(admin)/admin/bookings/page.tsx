@@ -184,7 +184,7 @@ export default function AdminBookingsPage() {
       {filteredBookings.map((b) => (
         <tr
           key={b._id}
-          className="border-t border-yellow-50/25 hover:bg-black/10"
+          className="border-t border-yellow-50/25 hover:bg-black/10 capitalize"
         >
           <td className="p-3 text-center font-medium">
             {b.packageId?.packageName}
