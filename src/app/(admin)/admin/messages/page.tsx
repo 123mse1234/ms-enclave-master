@@ -114,7 +114,7 @@ export default function AdminMessages() {
     <div
       key={msg._id}
       className={`bg-[#7a0002] border border-yellow-50/25 rounded-2xl shadow-2xl p-5 cursor-pointer transition hover:bg-[#8f0003] ${
-        !msg.isShown ? "ring-1 ring-yellow-200/70" : ""
+        !msg.isShown ? "ring-1 ring-yellow-200/5" : ""
       }`}
     >
       <div className="flex items-start gap-4">
