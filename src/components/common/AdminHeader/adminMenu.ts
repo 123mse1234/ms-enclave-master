@@ -8,6 +8,12 @@ export const menuData: Menu[] = [
     path: "/",
   },
   {
+    id: 11,
+    title: "Dashboard",
+    newTab: false,
+    path: "/admin",
+  },
+  {
     id: 2,
     title: "Bookings",
     newTab: false,
@@ -40,15 +46,15 @@ export const menuData: Menu[] = [
     ],
   },
   
-  {
-    id: 5,
-    title: "Room Settings",
-    newTab: false,
-    path: "/admin/room",
-  },
+  // {
+  //   id: 5,
+  //   title: "Room Settings",
+  //   newTab: false,
+  //   path: "/admin/room",
+  // },
   {
     id: 6,
-    title: "Messages",
+    title: "Enquiries",
     newTab: false,
     path: "/admin/messages",
   },
