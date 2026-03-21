@@ -60,7 +60,7 @@ export const metadata: Metadata = {
   applicationName: "M.S. Enclave Heritage Resort",
 
   title: {
-    default: "M.S. Enclave Heritage Resort – Best Heritage Stay in Palakkad",
+    default: "MS Enclave Heritage Resort | Best Luxury Resort in Palakkad Kerala",
     template: "%s | M.S. Enclave Heritage Resort",
   },
 
@@ -164,6 +164,8 @@ export default function RootLayout({
               <LayoutWrapper>{children}</LayoutWrapper>
           </FirstVisitLoader>
         </Providers>
+
+        
 
         {/* Razorpay Checkout Script */}
         {/* <Script

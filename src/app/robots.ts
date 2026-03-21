@@ -6,10 +6,9 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        // disallow: "/",
-
-        // disallow: ["/admin", "/api"],
+        disallow: ["/admin", "/admin/*"],
       },
     ],
+    sitemap: "https://msheritageresort.com/sitemap.xml",
   };
 }
