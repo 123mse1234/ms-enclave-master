@@ -2,7 +2,7 @@ export const galleryImages = [
   {
     src: "/images/activities/ms-enclave-palakkad-post-luxury-heritage-stay.webp",
     alt: "MS Enclave Heritage Resort Palakkad Poster Luxury Heritage Stay",
-    category: "Posts,",
+    category: "Posts",
   },
   {
     src: "/images/activities/ms-enclave-palakkad-post-golden-hour-by-the-pool.webp",

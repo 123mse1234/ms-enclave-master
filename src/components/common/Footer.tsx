@@ -32,8 +32,8 @@ export default function Footer() {
             </div>
             <div className="flex gap-4 mt-6">
               <Social icon={faGoogle} href={'https://share.google/bNocpD9oCYBNHBtsD'} />
-              <Social icon={faInstagram} href={'https://www.instagram.com/ms_enclaveheritageresort?igsh=cnI4NTdhMTFtcmp3'} />
-              <Social icon={faYoutube} href={'https://youtu.be/va9W1NfJ4D4?si=fNHIGIwiklFDz9Sn'} />
+              <Social icon={faInstagram} href={'https://www.instagram.com/ms_enclaveheritageresort'} />
+              <Social icon={faYoutube} href={'https://www.youtube.com/@ms_enclaveheritageresort'} />
               <Social icon={faWhatsapp} href={'https://api.whatsapp.com/send?phone=+919745666642&text=Hello%2C%20I%20would%20like%20to%20make%20an%20enquiry%20about%20your%20packages'} />
             </div>
             </div>
@@ -58,7 +58,7 @@ export default function Footer() {
               <h4 className="font-semibold text-xl mb-4">Quick Links</h4>
                 <ul className="space-y-3 text-gray-100  text- font-dm">
                   <li className="hover:font-bold hover:text-white"><Link href="/">My Profile</Link></li>
-                  <li className="hover:font-bold hover:text-white"><Link href="/my-booking">My Bookings</Link></li>
+                  <li className="hover:font-bold hover:text-white"><Link href="/my-bookings">My Bookings</Link></li>
                   <li className="hover:font-bold hover:text-white"><Link href="/about-us">About US</Link></li>
                   <li className="hover:font-bold hover:text-white"><Link href="/amenities">Amenities</Link></li>
                 </ul>

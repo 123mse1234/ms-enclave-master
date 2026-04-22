@@ -8,7 +8,7 @@ import {
 } from "next/font/google";
 import "./globals.css";
 import Providers from "@/providers";
-import Script from "next/script";
+// import Script from "next/script";
 
 // Custom font
 import { audreyFont } from "./fonts";
@@ -164,8 +164,6 @@ export default function RootLayout({
               <LayoutWrapper>{children}</LayoutWrapper>
           </FirstVisitLoader>
         </Providers>
-
-        
 
         {/* Razorpay Checkout Script */}
         {/* <Script
