@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { videos, Video } from "./videoList"; // 👈 import here
+import { videos} from "./videoList"; // 
 
 const TABS = ["all", "shorts", "video", ];
 
