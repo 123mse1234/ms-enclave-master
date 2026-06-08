@@ -18,12 +18,32 @@ export const videos: Video[] = [
   },
   {
     type: "shorts",
-    url: "https://www.youtube.com/embed/tQNWp6cwHXM",
+    url: "https://www.youtube.com/embed/vQGmIZzct-0",
     orientation: "portrait",
   },
   {
     type: "shorts",
-    url: "https://www.youtube.com/embed/CwipMTDGBdQ",
+    url: "https://www.youtube.com/embed/YsQIjp7Ai_A",
+    orientation: "portrait",
+  },
+  {
+    type: "shorts",
+    url: "https://www.youtube.com/embed/i169iMN083I",
+    orientation: "portrait",
+  },
+  {
+    type: "shorts",
+    url: "https://www.youtube.com/embed/4C3fMxbenbc",
+    orientation: "portrait",
+  },
+  {
+    type: "shorts",
+    url: "https://www.youtube.com/embed/GnZ_jnNghWU",
+    orientation: "portrait",
+  },
+  {
+    type: "shorts",
+    url: "https://www.youtube.com/embed/tQNWp6cwHXM",
     orientation: "portrait",
   },
   {
